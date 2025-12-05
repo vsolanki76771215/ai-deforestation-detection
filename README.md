@@ -8,12 +8,15 @@ Capstone Project — UMass Global AI/ML Bootcamp
 This project builds an automated system to detect deforestation and illegal mining activity in the Amazon using satellite imagery.
 The system integrates multi-source geospatial datasets, generates patch-level training labels, extracts remote-sensing features, and prepares the data for downstream ML modeling.
 
+
 📦 Data Collection
 This project integrates multi-source geospatial datasets to detect deforestation and illegal mining across three AOIs in Madre de Dios, Peru: La Pampa, Tambopata, and the Madre de Dios Corridor.
 Data was collected from public, authoritative sources, processed using reproducible Python scripts, and structured following remote-sensing best practices.
 All datasets are used under their respective open licenses.
 
+
 🌍 Areas of Interest (AOIs)
+
 Each dataset is clipped to the following AOIs (defined in config_aoi.py):
 
 La Pampa - Illegal gold-mining hotspot -High-intensity deforestation
