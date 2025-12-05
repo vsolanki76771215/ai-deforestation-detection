@@ -219,6 +219,86 @@ python build_patch_csv_from_npz.py
 ```
 
 ---
+### 📁 Project layout
+
+```
+project-root/
+│
+├── data/
+│   ├── raw/
+│   │   ├── hansen/
+│   │   │   ├── Hansen_GFC-2024-v1.12_treecover2000_10S_070W.tif
+│   │   │   └── Hansen_GFC-2024-v1.12_lossyear_10S_070W.tif
+│   │   │
+│   │   ├── sentinel2/
+│   │   │   ├── la_pampa/
+│   │   │   ├── tambopata/
+│   │   │   └── madre_de_dios_corridor/
+│   │   │
+│   │   └── wdpa/
+│   │       ├── osm_protected_areas.geojson
+│   │       ├── wdpa_aoi.cpg
+│   │       ├── wdpa_aoi.dbf
+│   │       ├── wdpa_aoi.fix
+│   │       ├── wdpa_aoi.prj
+│   │       ├── wdpa_aoi.shp
+│   │       └── wdpa_aoi.shx
+│   │
+│   ├── processed/
+│   │   ├── hansen/
+│   │   │   ├── la_pampa/
+│   │   │   │   ├── gfc_treecover2000_10S_070W_aoi.tif
+│   │   │   │   ├── gfc_lossyear_10S_070W_aoi.tif
+│   │   │   │   ├── gfc_loss_2018_2022_aoi.tif
+│   │   │   │   └── patches/
+│   │   │   │       ├── patch_000000.npz
+│   │   │   │       └── ...
+│   │   │   ├── tambopata/
+│   │   │   └── madre_de_dios_corridor/
+│   │   │
+│   │   ├── sentinel2/
+│   │   │   ├── la_pampa/
+│   │   │   │   ├── s2_ndvi_2018_aoi.tif
+│   │   │   │   ├── s2_ndvi_2022_aoi.tif
+│   │   │   │   └── patches/
+│   │   │   │       ├── patch_000000.npz
+│   │   │   │       └── ...
+│   │   │   ├── tambopata/
+│   │   │   └── madre_de_dios_corridor/
+│   │   │
+│   │   ├── patches/
+│   │   │   ├── la_pampa/
+│   │   │   │   ├── features/
+│   │   │   │   │   ├── patch_000000.npz
+│   │   │   │   │   └── ...
+│   │   │   │   └── labels/
+│   │   │   │       ├── patch_000000.npz
+│   │   │   │       └── ...
+│   │   │   ├── tambopata/
+│   │   │   └── madre_de_dios_corridor/
+│   │   │
+│   │   ├── wdpa/
+│   │   │   ├── wdpa_aoi_clean.gpkg
+│   │   │   ├── la_pampa/
+│   │   │   ├── tambopata/
+│   │   │   └── madre_de_dios_corridor/
+│   │   │
+│   │   └── dataset_ml/
+│   │       ├── la_pampa_patches.csv
+│   │       ├── tambopata_patches.csv
+│   │       ├── madre_de_dios_corridor_patches.csv
+│   │       ├── all_patches_combined.csv
+│   │       └── all_patches_features_labels_s2_ndvi.csv
+│
+├── scripts/
+│   ├── hansen_gfc_aoi.py
+│   ├── sentinel2_ndvi_aoi.py
+│   ├── preprocess_wdpa_dataset3.py
+│   └── build_patch_csv_from_npz.py
+│
+└── README.md
+```
+---
 
 # 📚 Acknowledgements
 - Hansen GFC: © University of Maryland, Google, USGS, NASA  
