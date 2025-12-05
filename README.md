@@ -16,9 +16,9 @@ All datasets are used under their respective open licenses.
 🌍 Areas of Interest (AOIs)
 Each dataset is clipped to the following AOIs (defined in config_aoi.py):
 
-La Pampa                Illegal gold-mining hotspot	High-intensity deforestation
-Tambopata               Tambopata National Reserve buffer	Protected area monitoring
-Madre de Dios Corridor  Agricultural & river-mining corridor	Mixed land-use change
+La Pampa - Illegal gold-mining hotspot -High-intensity deforestation
+Tambopata - Tambopata National Reserve buffer - Protected area monitoring
+Madre de Dios Corridor - Agricultural & river-mining corridor - Mixed land-use change
 
 All downstream datasets (rasters → patches → features → labels) are generated per AOI, ensuring consistency and scalability.
 
