@@ -1,270 +1,229 @@
-# 🌍 AI-Driven Deforestation & Illegal Mining Detection
-## Madre de Dios, Peru — La Pampa • Tambopata • Madre de Dios Corridor</br></br>
+# 🌍 AI-Driven Deforestation & Illegal Mining Detection  
+**Madre de Dios, Peru — La Pampa • Tambopata • Madre de Dios Corridor**
 
-### 📘 Overview
+---
 
-Illegal gold mining and unregulated land clearing are rapidly transforming the Amazon rainforest, especially in the **Madre de Dios** region of Peru. This project builds an **AI/ML** pipeline that integrates remote sensing, geospatial processing, and supervised machine learning to detect forest loss between 2018 and 2022.</br>
+## 📘 Overview
 
-The pipeline uses:</br>
+Illegal gold mining and unregulated land clearing are rapidly transforming the Amazon rainforest, especially in the **Madre de Dios** region of Peru.  
+This project builds an **AI/ML pipeline** that integrates **remote sensing, geospatial processing, and machine learning** to detect forest loss between **2018 and 2022**.
 
-- **Hansen Global Forest Change v1.12** for deforestation labels
-- **Sentinel-2 optical imagery** for NDVI-based vegetation features
-- **Protected Areas (WDPA)** for spatial context
+The pipeline uses:
+- **Hansen Global Forest Change v1.12** (deforestation labels)  
+- **Sentinel-2 NDVI** (vegetation features)  
+- **WDPA protected areas** (context & enforcement insights)  
 
-The output is a patch-level machine learning dataset **(43,576 samples)** and a baseline detection model that predicts where forest loss occurred.
+Final output:  
+✔ Patch-level ML dataset (43,576 samples)  
+✔ Fully reproducible data pipeline  
 
-### 🗺️ Areas of Interest (AOIs)
+---
 
-Defined in ```config_aoi.py```:
+# 🗺️ Areas of Interest (AOIs)
 
-La Pampa	Region dominated by illegal gold mining operations
-Tambopata	Buffer of the Tambopata National Reserve
-Madre de Dios Corridor	Mixed land use: agriculture, mining, transport
+Defined in `config_aoi.py`:
 
-Each dataset is clipped and tiled per AOI, ensuring spatial consistency.
+| AOI | Description |
+|-----|-------------|
+| **La Pampa** | Illegal gold mining hotspot |
+| **Tambopata** | Buffer of Tambopata National Reserve |
+| **Madre de Dios Corridor** | Agricultural, mining, and transport corridor |
 
-📦 Data Collection
-1️⃣ Hansen Global Forest Change v1.12 (GFC)
+Each dataset is **clipped and tiled per AOI**.
 
-Source:
-https://storage.googleapis.com/earthenginepartners-hansen/GFC-2024-v1.12
+---
 
-Bands used:
+# 📦 Data Collection
 
-treecover2000
+---
 
-lossyear
+## 1️⃣ Hansen Global Forest Change v1.12 (GFC)
 
-🔧 Processing Steps
+**Source:** https://storage.googleapis.com/earthenginepartners-hansen/GFC-2024-v1.12  
 
-Download full tile (10S_070W)
+**Bands used:**
+- `treecover2000`
+- `lossyear`
 
-Clip to AOI
+### 🔧 Processing Steps
+1. Download full tile (`10S_070W`)  
+2. Clip tile to AOI  
+3. Create binary forest loss map (2018–2022)  
+4. Generate 32×32 NPZ label patches  
 
-Generate binary forest loss mask for 2018–2022
+### 📁 Raw Files
 
-Tile rasters into 32×32 NPZ label patches
-
-📁 Raw Files
+```
 data/raw/hansen/
     Hansen_GFC-2024-v1.12_treecover2000_10S_070W.tif
     Hansen_GFC-2024-v1.12_lossyear_10S_070W.tif
+```
 
-📁 Processed Outputs
+### 📁 Processed Outputs
+
+```
 data/processed/hansen/<AOI>/
     gfc_treecover2000_10S_070W_aoi.tif
     gfc_lossyear_10S_070W_aoi.tif
     gfc_loss_2018_2022_aoi.tif
-    patches/*.npz
+```
 
+**Purpose:** Provides *supervised labels* for deforestation detection.
 
-Purpose: Provides supervised labels for model training.
+---
 
-2️⃣ Sentinel-2 Optical Imagery (NDVI 2018 & 2022)
+## 2️⃣ Sentinel-2 NDVI (2018 & 2022)
 
-Source:
-AWS Earth Search STAC API
+**Source:** AWS Earth Search STAC API  
 https://earth-search.aws.element84.com/v1
 
-Bands used:
+**Bands used:**  
+- B04 (Red)  
+- B08 (NIR)
 
-B04 (Red)
+### 🔧 Processing Steps
+1. Query cloud-filtered Sentinel-2 L2A scenes  
+2. Build dry-season composites for **2018** & **2022**  
+3. Clip to AOI  
+4. Compute NDVI  
+5. Generate 32×32 NPZ feature patches
+   
+### 📁 Raw Files
 
-B08 (NIR)
+```
+data/raw/sentinel2/<AOI>
+    s2_2018_dry_aoi.tif
+    s2_2022_dry_aoi.tif
+```
 
-🔧 Processing Steps
+### 📁 Processed Outputs
 
-Query STAC API for cloud-filtered scenes
-
-Build median composites for:
-
-2018 dry season
-
-2022 dry season
-
-Clip to AOI
-
-Compute NDVI
-
-Generate 32×32 NPZ feature patches
-
-📁 Processed Outputs
+```
 data/processed/sentinel2/<AOI>/
     s2_ndvi_2018_aoi.tif
     s2_ndvi_2022_aoi.tif
-    patches/*.npz
+```
 
+**Purpose:** Provides NDVI-based vegetation change features.
 
-Purpose: Provides NDVI-based vegetation change features.
+---
 
-3️⃣ Protected Areas – WDPA
+## 3️⃣ WDPA Protected Areas
 
-Source:
-Google Earth Engine dataset: WCMC/WDPA/current/polygons
+**Source:** UNEP-WCMC via Google Earth Engine  
+Dataset ID: `WCMC/WDPA/current/polygons`
 
-📁 Processed Outputs
+### 📁 Processed Outputs
+
+```
 data/processed/wdpa/
     wdpa_aoi_clean.gpkg
-    <AOI>/wdpa_<AOI>.gpkg
+    la_pampa/wdpa_la_pampa.gpkg
+    tambopata/wdpa_tambopata.gpkg
+    madre_de_dios_corridor/wdpa_mdd_corridor.gpkg
+```
 
+**Purpose:** Identify patches inside protected areas & monitor encroachment.
 
-Purpose: Adds context (inside/outside protected areas, proximity to boundary).
+---
 
-🧩 Patch Extraction (Raster → NPZ → CSV)
+# 🧩 Patch Extraction (Raster → NPZ → CSV)
 
-For each AOI:
+Repository uses this **final patch directory layout**:
 
-Type	Description	Output
-Feature patches	NDVI (2018, 2022)	features/*.npz
-Label patches	Binary forest loss	labels/*.npz
+```
+data/processed/patches/
+    la_pampa/
+        features/
+            patch_000000.npz
+            patch_000001.npz
+            ...
+        labels/
+            patch_000000.npz
+            patch_000001.npz
+            ...
+    tambopata/
+        features/
+        labels/
+    madre_de_dios_corridor/
+        features/
+        labels/
+```
 
-Each patch contains a 32×32 array.
+### 📦 Patch Contents
 
-📊 Final Machine Learning Dataset
+**Feature patch (`features/*.npz`)** contains:
+```
+ndvi_2018      → 32×32 array  
+ndvi_2022      → 32×32 array  
+metadata       → row, col, patch_size, aoi
+```
 
-NPZ patches were merged into tabular datasets for ML:
+**Label patch (`labels/*.npz`)** contains:
+```
+loss_mask      → 32×32 binary array (1 = loss)
+treecover      → optional treecover2000
+metadata       → row, col, patch_size, aoi
+```
 
+### 🔗 Patch Pairing
+Matched by identical filenames:
+
+```
+features/patch_012345.npz
+labels/patch_012345.npz
+```
+
+If no pair exists → skipped.
+
+---
+
+# 📊 Final Machine Learning Dataset
+
+Converted into CSVs:
+
+```
 data/processed/dataset_ml/
     la_pampa_patches.csv
     tambopata_patches.csv
     madre_de_dios_corridor_patches.csv
     all_patches_combined.csv
     all_patches_features_labels_s2_ndvi.csv
+```
 
-Dataset Size
+### Dataset Size
+| AOI | Samples |
+|-----|---------|
+| La Pampa | 3,576 |
+| Tambopata | 20,000 |
+| Madre de Dios Corridor | 20,000 |
+| **Total** | **43,576** |
 
-La Pampa: 3,576 samples
+### Features Included
+- NDVI mean/std/min/max (2018 & 2022)  
+- NDVI Δ (2022 − 2018)  
+- Loss fraction  
+- Binary loss label  
 
-Tambopata: 20,000 samples
+---
 
-Madre de Dios Corridor: 20,000 samples
+# 🔁 Reproducibility
 
-Total: 43,576 samples → ✔ Exceeds rubric requirement (≥15,000)
+Regenerate the entire dataset:
 
-Features Include
-
-NDVI statistics (mean, std, min, max) per year
-
-NDVI difference (2022–2018)
-
-Loss fraction
-
-Patch-level binary label
-
-🤖 Modeling Approach
-Feature Engineering
-
-From each 32×32 patch:
-
-NDVI mean (2018, 2022)
-
-NDVI std, min, max
-
-NDVI delta (2022–2018)
-
-Loss fraction (% of pixels deforested)
-
-Baseline Models
-
-Logistic Regression
-
-Random Forest Classifier
-
-Gradient Boosted Trees (XGBoost) (optional extension)
-
-Training–Test Split
-
-80% training
-
-20% testing
-
-Stratified on labels due to class imbalance
-
-Evaluation Metrics
-
-Accuracy
-
-Precision, Recall, F1
-
-ROC AUC
-
-Confusion Matrix
-
-SHAP values for feature explainability
-
-📈 Results Summary
-✔ NDVI Difference is the strongest predictor
-
-Patches with large NDVI drop correlated strongly with Hansen-labeled loss.
-
-✔ Random Forest achieved highest performance
-
-Typical results (example):
-
-Metric	Value
-Accuracy	~0.87
-Precision	~0.82
-Recall	~0.85
-F1 Score	~0.83
-ROC AUC	~0.92
-✔ Model generalizes well across AOIs
-
-Forest loss signatures in La Pampa and Tambopata show similar spectral behavior.
-
-✔ Feature importance (SHAP)
-
-NDVI difference
-
-NDVI 2022 mean
-
-NDVI 2018 std
-
-Loss fraction (secondary validation label)
-
-🚀 Future Work
-1️⃣ Add Temporal Deep Learning
-
-Use 5–10 years of Sentinel-2 data and train a CNN-LSTM or Transformer.
-
-2️⃣ Add Radar Data (Sentinel-1)
-
-SAR can detect forest structure even under cloud cover.
-
-3️⃣ Illegal Mining Detection
-
-Integrate:
-
-Sand tailings spectral signatures
-
-Water turbidity indices
-
-High-frequency gold price correlation analysis
-
-4️⃣ Pixel-Level Semantic Segmentation
-
-Train a U-Net on NDVI stacks for pixel-wise forest change detection.
-
-5️⃣ Model Deployment
-
-Interactive dashboard (Streamlit / FastAPI)
-
-AOI selection + automated prediction
-
-Risk scoring heatmaps
-
-🔁 Reproducibility
-
-Regenerate the entire dataset with:
-
+```bash
 python hansen_gfc_aoi.py --aoi all
 python sentinel2_ndvi_aoi.py --aoi all
 python preprocess_wdpa_dataset3.py
 python build_patch_csv_from_npz.py
+```
 
-📚 License & Acknowledgements
+---
 
-Hansen GFC: © University of Maryland, Google, USGS, NASA
+# 📚 Acknowledgements
+- Hansen GFC: © University of Maryland, Google, USGS, NASA  
+- Sentinel-2: © ESA Copernicus Programme  
+- WDPA: © UNEP-WCMC  
 
-Sentinel-2: © ESA Copernicus Programme
+---
 
-WDPA: © UNEP-WCMC
