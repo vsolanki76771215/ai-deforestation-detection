@@ -1,27 +1,22 @@
-.
-🌍 AI-Driven Deforestation & Illegal Mining Detection
+# 🌍 AI-Driven Deforestation & Illegal Mining Detection
+## Madre de Dios, Peru — La Pampa • Tambopata • Madre de Dios Corridor</br></br>
 
-Madre de Dios, Peru — La Pampa • Tambopata • Madre de Dios Corridor
+### 📘 Overview
 
-📘 Overview
+Illegal gold mining and unregulated land clearing are rapidly transforming the Amazon rainforest, especially in the **Madre de Dios** region of Peru. This project builds an **AI/ML** pipeline that integrates remote sensing, geospatial processing, and supervised machine learning to detect forest loss between 2018 and 2022.</br>
 
-Illegal gold mining and unregulated land clearing are rapidly transforming the Amazon rainforest, especially in the Madre de Dios region of Peru. This project builds an AI/ML pipeline that integrates remote sensing, geospatial processing, and supervised machine learning to detect forest loss between 2018 and 2022.
+The pipeline uses:</br>
 
-The pipeline uses:
+- **Hansen Global Forest Change v1.12** for deforestation labels
+- **Sentinel-2 optical imagery** for NDVI-based vegetation features
+- **Protected Areas (WDPA)** for spatial context
 
-Hansen Global Forest Change v1.12 for deforestation labels
+The output is a patch-level machine learning dataset **(43,576 samples)** and a baseline detection model that predicts where forest loss occurred.
 
-Sentinel-2 optical imagery for NDVI-based vegetation features
+### 🗺️ Areas of Interest (AOIs)
 
-Protected Areas (WDPA) for spatial context
+Defined in ```config_aoi.py```:
 
-The output is a patch-level machine learning dataset (43,576 samples) and a baseline detection model that predicts where forest loss occurred.
-
-🗺️ Areas of Interest (AOIs)
-
-Defined in config_aoi.py:
-
-AOI	Description
 La Pampa	Region dominated by illegal gold mining operations
 Tambopata	Buffer of the Tambopata National Reserve
 Madre de Dios Corridor	Mixed land use: agriculture, mining, transport
