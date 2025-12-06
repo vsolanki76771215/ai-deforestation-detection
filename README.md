@@ -300,6 +300,48 @@ project-root/
 ```
 ---
 
+### 📁 Dataset access
+Because the full geospatial dataset exceeds GitHub’s file-size limits, a curated data subset is provided through Google Drive to support reproducibility, evaluation, and demonstration of the full data pipeline.  
+
+🔗 **Google Drive Dataset Link:**  
+https://drive.google.com/drive/folders/17pf9_Pf-NWv1betSzZdS5weRk9DrL5P9?usp=sharing  
+
+Folder structure mirrors the repository:
+
+```
+data-subset/
+│
+├── raw/
+│   ├── hansen/
+│   │   └── 10S_070W/
+│   │
+│   ├── sentinel2/
+│   │   └── la_pampa/
+│   │
+│   └── wdpa/
+│
+├── processed/
+│   ├── hansen/
+│   │   └── la_pampa/
+│   │
+│   ├── sentinel2/
+│   │   └── la_pampa/
+│   │
+│   ├── wdpa/
+│   │   └── la_pampa/
+│   │
+│   ├── patches/
+│   │   └── la_pampa/
+│   │
+│   └── dataset_ml/
+
+
+```
+
+---
+
+---
+
 # 📚 Acknowledgements
 - Hansen GFC: © University of Maryland, Google, USGS, NASA  
 - Sentinel-2: © ESA Copernicus Programme  
