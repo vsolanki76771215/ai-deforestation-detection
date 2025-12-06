@@ -340,8 +340,6 @@ data-subset/
 
 ---
 
----
-
 # 📚 Acknowledgements
 - Hansen GFC: © University of Maryland, Google, USGS, NASA  
 - Sentinel-2: © ESA Copernicus Programme  
