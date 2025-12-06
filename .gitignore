@@ -1,0 +1,29 @@
+# -----------------------------
+# PYTHON & ENVIRONMENT
+# -----------------------------
+__pycache__/
+*.pyc
+.venv/
+.env
+
+# -----------------------------
+# LARGE GEO DATA (DO NOT UPLOAD)
+# -----------------------------
+data/raw/*
+data/processed/*
+
+# Allow WDPA metadata shapefiles (small)
+!data/raw/wdpa/*.cpg
+!data/raw/wdpa/*.dbf
+!data/raw/wdpa/*.fix
+!data/raw/wdpa/*.prj
+!data/raw/wdpa/*.shp
+!data/raw/wdpa/*.shx
+!data/raw/wdpa/*.geojson
+
+# -----------------------------
+# OS / EDITOR FILES
+# -----------------------------
+.DS_Store
+.vscode/
+.idea/
